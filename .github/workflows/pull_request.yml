@@ -16,6 +16,7 @@ jobs:
       enable_macos_checks: true
       macos_xcode_versions: '["16.3"]'
       macos_build_command: "xcrun swift build"
+      macos_versions: '["sequoia"]'
   soundness:
     name: Soundness
     uses: swiftlang/github-workflows/.github/workflows/soundness.yml@main
