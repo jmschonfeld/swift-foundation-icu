@@ -22,6 +22,9 @@ option(BUILD_SHARED_LIBS "build shared libraries" ON)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+include(CheckLinkerFlag)
+check_linker_flag(CXX "LINKER:--build-id=sha1" LINKER_SUPPORTS_BUILD_ID)
+
 include(GNUInstallDirs)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
@@ -78,6 +81,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "WASI")
         $<$<COMPILE_LANGUAGE:C,CXX>:_WASI_EMULATED_MMAN>)
     add_link_options("-Lwasi-emulated-signal")
     add_link_options("-Lwasi-emulated-mman")
+elseif(CMAKE_SYSTEM_NAME STREQUAL FreeBSD)
+    # On FreeBSD, we should not set U_TIMEZONE
 else()
     add_compile_definitions(
         $<$<COMPILE_LANGUAGE:C,CXX>:U_TIMEZONE=timezone>)
